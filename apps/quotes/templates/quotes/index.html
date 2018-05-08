@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Belt Exam: Login</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<h1>Welcome!</h1>
+	<div id="register">
+		<h2>Register</h2>
+		{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+		<form action="/login" method="POST">
+			{% csrf_token %}
+			<label for="name">Name: <input type="text" name="name"></label><br>
+			<label for="alias">Alias: <input type="text" name="alias"></label><br>
+			<label for="email">Email: <input type="text" name="email"></label><br>
+			<label for="password">Password: <input type="password" name="password"></label><br>
+			<p>* Password must be at least 8 characters</p>
+			<label for="confirm_pw">Confirm Password: <input type="password" name="confirm_pw"></label><br>
+			<label for="birth_date">Date of Birth: <input type="date" name="birth_date"></label><br>
+			<input type="submit" name="submit" value="Register">
+		</form>
+	</div>
+	<div id="login">
+		<h2>Login</h2>
+		<form action="/login" method="POST">
+			{% csrf_token %}
+			<label for="email">Email: <input type="text" name="email"></label><br>
+			<label for="password">Password: <input type="password" name="password"></label><br>
+			<input type="submit" name="submit" value="Login">
+		</form>
+	</div>
+</body>
+</html>

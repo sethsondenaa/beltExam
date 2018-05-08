@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quotes: Home Page</title>
+</head>
+<body>
+	<h1>Welcome, {{user}}!</h1>
+	<a href="/logout">Logout</a>
+	<h2>Quotable Quotes</h2>
+{% for quote in quotes %}
+		<p>{{quote.author}}: {{quote.content}}</p>
+		<p>Posted by <a href="/users/{{quote.user.id}}">{{quote.user}}</a></p>
+		<form action="/quotes" method="POST">
+			{% csrf_token %}
+			<input type="submit" name="add_favorite" value="Add to My List">
+			<input type="hidden" name="favorite" value="{{quote.id}}">
+			<input type="hidden" name="posted_by" value="{{quote.user.id}}">
+		</form>
+	{% endfor %}
+	<h2>Your Favorites</h2>
+	{% for favorite in favorites %}
+		<p>{{favorite.quote.author}}: {{favorite.quote.content}}</p>
+		<p>Posted by <a href="/users/{{quote.posted_by.id}}">{{favorite.posted_by}}</a></p>
+		<form action="/quotes" method="POST">
+			{% csrf_token %}
+			<input type="submit" name="remove_favorite" value="Remove from My List">
+			<input type="hidden" name="favorite" value="{{favorite.id}}">
+		</form>
+	{% endfor %}
+	<h2>Contribute a Quote</h2>
+	{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<li>{{ message }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<form action="/add" method="POST">
+		{% csrf_token %}
+		<label for="quoted_by">Quoted By: <input type="text" name="quoted_by"></label><br>
+		<label for="content">Message: <textarea rows="4" cols="20" name="content"></textarea></label><br>
+		<input type="submit" name="submit" value="Submit">
+	</form>
+</body>
+</html>
